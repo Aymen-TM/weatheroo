@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weatheroo/components/CurrentWeather.dart';
+import 'package:weatheroo/components/TimeWeather.dart';
+import 'package:weatheroo/components/TodayWeather.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,7 +16,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       backgroundColor: Color(0xff030317),
       body: Column(
-        children: <Widget>[CurrentWeather()],
+        children: <Widget>[CurrentWeather(), TodayWeather(), TimeWeather()],
       ),
     );
   }
