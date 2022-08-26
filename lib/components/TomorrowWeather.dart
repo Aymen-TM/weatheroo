@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:weatheroo/components/ExtraWeatherInfo.dart';
 
 class TomorrowWeather extends StatelessWidget {
   const TomorrowWeather({Key? key}) : super(key: key);
@@ -78,12 +77,50 @@ class TomorrowWeather extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                ExtraWeatherInfo()
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      WeatherInfo("Wind", "test"),
+                      WeatherInfo("Wind", "test"),
+                      WeatherInfo("Wind", "test"),
+                    ],
+                  ),
+                )
               ],
             ),
           )
         ],
       ),
+    );
+  }
+
+  Widget WeatherInfo(element, info) {
+    return Column(
+      children: [
+        Icon(
+          CupertinoIcons.wind,
+          color: Colors.white,
+          size: 30,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          info,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          element,
+          style: TextStyle(
+              fontSize: 16,
+              color: Colors.blue.shade900,
+              fontWeight: FontWeight.bold),
+        )
+      ],
     );
   }
 }

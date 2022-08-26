@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
-import 'package:weatheroo/components/ExtraWeatherInfo.dart';
+import 'package:intl/intl.dart';
+import 'package:weatheroo/Models/weather.dart';
 
 class CurrentWeather extends StatefulWidget {
-  const CurrentWeather({Key? key}) : super(key: key);
+  final Weather data;
+  final Function updatData;
+  const CurrentWeather({Key? key, required this.data, required this.updatData})
+      : super(key: key);
 
   @override
   _CurrentWeatherState createState() => _CurrentWeatherState();
@@ -24,6 +28,14 @@ class _CurrentWeatherState extends State<CurrentWeather> {
     focusNode.requestFocus();
   }
 
+  getDateFormat(seconds) {
+    final DateTime currentDate =
+        DateTime.fromMillisecondsSinceEpoch(seconds * 1000);
+    final DateFormat date = DateFormat('EEEE d MMMM');
+    final String formatted = date.format(currentDate);
+    return formatted;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -38,7 +50,9 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             bottomLeft: Radius.circular(60), bottomRight: Radius.circular(60)),
         child: Column(
           children: <Widget>[
-            Container(child: showSearchBar ? SearchInput() : CityName("test")),
+            Container(
+                child:
+                    showSearchBar ? SearchInput() : CityName(widget.data.name)),
             Container(
               margin: EdgeInsets.only(top: 25),
               padding: EdgeInsets.all(10),
@@ -50,7 +64,8 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                 style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 4),
               ),
             ),
-            CustomStack("DZ"),
+            CustomStack(widget.data.weatherDescription, widget.data.temp,
+                widget.data.dt),
             Divider(
               thickness: 1,
               color: Colors.white,
@@ -58,7 +73,19 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             SizedBox(
               height: 10,
             ),
-            ExtraWeatherInfo()
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  WeatherInfo("Wind", widget.data.windSpeed + " meter/sec",
+                      CupertinoIcons.wind),
+                  WeatherInfo("Pressure", widget.data.pressure + " hPa",
+                      CupertinoIcons.thermometer),
+                  WeatherInfo("Humidity", widget.data.humidity + " %",
+                      CupertinoIcons.drop),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -97,8 +124,9 @@ class _CurrentWeatherState extends State<CurrentWeather> {
       ),
       textInputAction: TextInputAction.search,
       onSubmitted: (value) {
-        var temp;
-        if (temp == null) {
+        widget.updatData(value);
+        _ShowSearchBar();
+        /*if (value != null) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -116,12 +144,12 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   ],
                 );
               });
-        }
+        }*/
       },
     );
   }
 
-  Widget CustomStack(city) {
+  Widget CustomStack(city, temp, date) {
     return Container(
       height: 220,
       child: Stack(
@@ -137,7 +165,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
             child: Center(
               child: Column(children: [
                 GlowText(
-                  '27',
+                  temp,
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 40, height: 0.1),
                 ),
@@ -146,7 +174,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                   style: TextStyle(fontSize: 25),
                 ),
                 Text(
-                  "July 26 2022",
+                  getDateFormat(date),
                   style: TextStyle(fontSize: 18),
                 )
               ]),
@@ -154,6 +182,35 @@ class _CurrentWeatherState extends State<CurrentWeather> {
           )
         ],
       ),
+    );
+  }
+
+  Widget WeatherInfo(element, info, img) {
+    return Column(
+      children: [
+        Icon(
+          img,
+          color: Colors.white,
+          size: 30,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          info,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        Text(
+          element,
+          style: TextStyle(
+              fontSize: 16,
+              color: Colors.blue.shade900,
+              fontWeight: FontWeight.bold),
+        )
+      ],
     );
   }
 }

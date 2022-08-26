@@ -7,13 +7,18 @@ class TimeWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [Weather(), Weather(), Weather(), Weather()],
+      children: [
+        WeatherComponent(),
+        WeatherComponent(),
+        WeatherComponent(),
+        WeatherComponent()
+      ],
     );
   }
 }
 
-class Weather extends StatelessWidget {
-  const Weather({
+class WeatherComponent extends StatelessWidget {
+  const WeatherComponent({
     Key? key,
   }) : super(key: key);
 
