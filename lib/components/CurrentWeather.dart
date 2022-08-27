@@ -47,7 +47,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
           spreadRadius: 8,
           color: const Color(0xff00A1FF),
           margin: const EdgeInsets.all(2),
-          padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
           borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(60),
               bottomRight: Radius.circular(60)),
@@ -82,7 +82,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    WeatherInfo("Wind", widget.data.windSpeed + " meter/sec",
+                    WeatherInfo("Wind", widget.data.windSpeed + " m/s",
                         CupertinoIcons.wind),
                     WeatherInfo("Pressure", widget.data.pressure + " hPa",
                         CupertinoIcons.thermometer),

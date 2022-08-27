@@ -10,34 +10,36 @@ class TodayWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.to(Detail());
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Today",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-            GestureDetector(
-              child: Row(
-                children: [
-                  Text("7 days",
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  Icon(
-                    CupertinoIcons.right_chevron,
-                    color: Colors.white,
-                  )
-                ],
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Today",
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          ),
+          Material(
+            color: Colors.transparent,
+            child: Ink(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => Get.to(Detail()),
+                child: Row(
+                  children: [
+                    Text("7 days",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Icon(
+                      CupertinoIcons.right_chevron,
+                      color: Colors.white,
+                    )
+                  ],
+                ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
