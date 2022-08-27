@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_glow/flutter_glow.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:weatheroo/Models/weather.dart';
+import 'package:weatheroo/controller/HomeController.dart';
+import 'package:weatheroo/pages/Home.dart';
 
 class CurrentWeather extends StatefulWidget {
   final Weather data;
-  final Function updatData;
-  const CurrentWeather({Key? key, required this.data, required this.updatData})
-      : super(key: key);
+  const CurrentWeather({Key? key, required this.data}) : super(key: key);
 
   @override
   _CurrentWeatherState createState() => _CurrentWeatherState();
@@ -39,56 +40,61 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: GlowContainer(
-        height: MediaQuery.of(context).size.height - 250,
-        glowColor: const Color(0xff00A1FF),
-        spreadRadius: 8,
-        color: const Color(0xff00A1FF),
-        margin: const EdgeInsets.all(2),
-        padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
-        borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(60), bottomRight: Radius.circular(60)),
-        child: Column(
-          children: <Widget>[
-            Container(
-                child:
-                    showSearchBar ? SearchInput() : CityName(widget.data.name)),
-            Container(
-              margin: EdgeInsets.only(top: 25),
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Colors.white),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Text(
-                "Updated",
-                style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 4),
+      child: GetBuilder<HomeController>(builder: (controller) {
+        return GlowContainer(
+          height: MediaQuery.of(context).size.height - 250,
+          glowColor: const Color(0xff00A1FF),
+          spreadRadius: 8,
+          color: const Color(0xff00A1FF),
+          margin: const EdgeInsets.all(2),
+          padding: const EdgeInsets.fromLTRB(20, 60, 20, 20),
+          borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(60),
+              bottomRight: Radius.circular(60)),
+          child: Column(
+            children: <Widget>[
+              Container(
+                  child: showSearchBar
+                      ? SearchInput()
+                      : CityName(widget.data.name)),
+              Container(
+                margin: EdgeInsets.only(top: 25),
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Colors.white),
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                child: Text(
+                  "Updated",
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, letterSpacing: 4),
+                ),
               ),
-            ),
-            CustomStack(widget.data.weatherDescription, widget.data.temp,
-                widget.data.dt),
-            Divider(
-              thickness: 1,
-              color: Colors.white,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  WeatherInfo("Wind", widget.data.windSpeed + " meter/sec",
-                      CupertinoIcons.wind),
-                  WeatherInfo("Pressure", widget.data.pressure + " hPa",
-                      CupertinoIcons.thermometer),
-                  WeatherInfo("Humidity", widget.data.humidity + " %",
-                      CupertinoIcons.drop),
-                ],
+              CustomStack(widget.data.weatherDescription, widget.data.temp,
+                  widget.data.dt),
+              Divider(
+                thickness: 1,
+                color: Colors.white,
               ),
-            )
-          ],
-        ),
-      ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    WeatherInfo("Wind", widget.data.windSpeed + " meter/sec",
+                        CupertinoIcons.wind),
+                    WeatherInfo("Pressure", widget.data.pressure + " hPa",
+                        CupertinoIcons.thermometer),
+                    WeatherInfo("Humidity", widget.data.humidity + " %",
+                        CupertinoIcons.drop),
+                  ],
+                ),
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -111,42 +117,25 @@ class _CurrentWeatherState extends State<CurrentWeather> {
   }
 
   Widget SearchInput() {
-    return TextField(
-      style: const TextStyle(color: Colors.white),
-      autofocus: true,
-      focusNode: focusNode,
-      decoration: const InputDecoration(
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10))),
-        fillColor: const Color(0xff030317),
-        filled: true,
-        hintText: 'Enter a City Name',
-      ),
-      textInputAction: TextInputAction.search,
-      onSubmitted: (value) {
-        widget.updatData(value);
-        _ShowSearchBar();
-        /*if (value != null) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: const Color(0xff030317),
-                  title: Text('City not found'),
-                  content: Text('Pleas check the city name'),
-                  actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          _ShowSearchBar();
-                        },
-                        child: Text("Ok"))
-                  ],
-                );
-              });
-        }*/
-      },
-    );
+    return GetBuilder<HomeController>(builder: (controller) {
+      return TextField(
+        style: const TextStyle(color: Colors.white),
+        autofocus: true,
+        focusNode: focusNode,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          fillColor: const Color(0xff030317),
+          filled: true,
+          hintText: 'Enter a City Name',
+        ),
+        textInputAction: TextInputAction.search,
+        onSubmitted: (value) {
+          _ShowSearchBar();
+          controller.updatData(value);
+        },
+      );
+    });
   }
 
   Widget CustomStack(city, temp, date) {
@@ -155,7 +144,7 @@ class _CurrentWeatherState extends State<CurrentWeather> {
       child: Stack(
         children: <Widget>[
           Image(
-            image: AssetImage("assets/sunny.png"),
+            image: AssetImage(widget.data.getWeatherImage("Clouds")),
             fit: BoxFit.fill,
           ),
           Positioned(

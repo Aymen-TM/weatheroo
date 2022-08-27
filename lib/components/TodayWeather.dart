@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:weatheroo/pages/Detail.dart';
 
 class TodayWeather extends StatelessWidget {
@@ -10,9 +12,7 @@ class TodayWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const Detail();
-        }));
+        Get.to(Detail());
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 30),
