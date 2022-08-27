@@ -12,7 +12,7 @@ class TomorrowWeather extends StatelessWidget {
       spreadRadius: 8,
       color: const Color(0xff00A1FF),
       margin: const EdgeInsets.all(2),
-      padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 60, left: 20, right: 15),
       borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(60), bottomRight: Radius.circular(60)),
       child: Column(
@@ -23,8 +23,8 @@ class TomorrowWeather extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width / 2.3,
-                  height: MediaQuery.of(context).size.width / 2.3,
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  height: MediaQuery.of(context).size.width / 2.5,
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage("assets/rainy_2d.png"))),

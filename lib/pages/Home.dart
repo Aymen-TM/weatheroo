@@ -20,12 +20,14 @@ class Home extends StatelessWidget {
                 builder:
                     ((BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        CurrentWeather(data: snapshot.data),
-                        TodayWeather(),
-                        TimeWeather()
-                      ],
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CurrentWeather(data: snapshot.data),
+                          TodayWeather(),
+                          TimeWeather()
+                        ],
+                      ),
                     );
                   } else {
                     return Container(
